@@ -1,4 +1,4 @@
-# ML-python-sklearn-knc-cpu-training
+# ML-python-sklearn-lrc-cpu-training
 
 
 Quickstart project for executing a Wine classifier using the SciKit-Learn framework on a CPU.
