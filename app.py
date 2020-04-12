@@ -21,7 +21,7 @@ RANDOM_SEED = 42
 target_f1 = 0.9
 
 # instantiate classifier and scaler
-clf = linear_model.LogisticRegression()
+clf = linear_model.RidgeClassifier()
 scaler = StandardScaler()
 
 # Step 2: Perform training for model
@@ -44,7 +44,6 @@ X_test = scaler.transform(X_test)
 # train model
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
-y_pred_proba = clf.predict_proba(X_test)
 
 # Step 3: Evaluate the quality of the trained model
 
@@ -69,8 +68,6 @@ with open("model.onnx", "wb") as f:
 
 # calculate set of quality metrics
 accuracy_metric = accuracy_score(y_test, y_pred)
-logloss_metric = log_loss(y_test, y_pred_proba)
-roc_auc_metric = roc_auc_score(y_test, y_pred_proba, multi_class='ovr')
 
 # write metrics
 if not os.path.exists("metrics"):
@@ -80,10 +77,6 @@ with open("metrics/f1.metric", "w+") as f:
     json.dump(f1_metric, f)
 with open("metrics/accuracy.metric", "w+") as f:
     json.dump(accuracy_metric, f)
-with open("metrics/logloss.metric", "w+") as f:
-    json.dump(logloss_metric, f)
-with open("metrics/roc_auc.metric", "w+") as f:
-    json.dump(roc_auc_metric, f)
 
 # plots
 confusion_metrics = plot_confusion_matrix(clf, X_test, y_test, display_labels=class_names, cmap=plt.cm.Blues)
